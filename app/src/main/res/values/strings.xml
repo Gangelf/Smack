@@ -5,4 +5,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="hint_create_user_name">User Name</string>
+    <string name="hint_create_email">Email</string>
+    <string name="hint_create_password">Password</string>
+    <string name="generate_avatar">Tap to generate user avatar</string>
+    <string name="gnerate_user_btn">Gnerate User Button</string>
+    <string name="generate_background_color">GENERATE BACKGROUND COLOR</string>
+    <string name="create_user_btn">CREATE USER</string>
 </resources>
