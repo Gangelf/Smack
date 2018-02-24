@@ -1,9 +1,10 @@
-package com.example.gangelf.smack
+package com.example.gangelf.smack.Controller
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.example.gangelf.smack.R
 
 class LoginActivity : AppCompatActivity() {
 

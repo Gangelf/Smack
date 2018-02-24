@@ -1,9 +1,11 @@
-package com.example.gangelf.smack
+package com.example.gangelf.smack.Controller
 
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.example.gangelf.smack.R
+import com.example.gangelf.smack.Services.AuthService
 import kotlinx.android.synthetic.main.activity_user_creation.*
 import java.util.*
 
@@ -49,6 +51,9 @@ class UserCreationActivity : AppCompatActivity() {
     }
 
     fun createUserClicked(view: View) {
+        AuthService.registerUser(this, "a@b.com", "123456", {
+
+        })
 
     }
 
