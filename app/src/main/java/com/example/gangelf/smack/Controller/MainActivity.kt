@@ -18,11 +18,15 @@ import com.example.gangelf.smack.R
 import com.example.gangelf.smack.Services.AuthService
 import com.example.gangelf.smack.Services.UserDataService
 import com.example.gangelf.smack.Utilities.BROADCAST_USER_DATA_CHAANGE
+import com.example.gangelf.smack.Utilities.SOCKET_URL
+import io.socket.client.IO
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    val socket = IO.socket(SOCKET_URL)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +38,24 @@ class MainActivity : AppCompatActivity() {
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-        hideKeyboard()
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(BROADCAST_USER_DATA_CHAANGE))
+        socket.connect()
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(userDataChangeReceiver)
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        socket.disconnect()
     }
 
     private val userDataChangeReceiver = object: BroadcastReceiver() {
@@ -89,11 +108,10 @@ class MainActivity : AppCompatActivity() {
                         val channelDesc = descTextField.text.toString()
 
                         //Create Channel with the channel name and description
-                        hideKeyboard()
+                        socket.emit("newChannel", channelName, channelDesc)
                     }
                     .setNegativeButton("Cancel") { dialogInterface, i ->
                         //Cancel and close the dialog
-                        hideKeyboard()
                     }
                     .show()
         }
