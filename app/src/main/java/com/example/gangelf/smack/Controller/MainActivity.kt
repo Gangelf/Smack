@@ -14,12 +14,15 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.example.gangelf.smack.Model.Channel
 import com.example.gangelf.smack.R
 import com.example.gangelf.smack.Services.AuthService
+import com.example.gangelf.smack.Services.MessageService
 import com.example.gangelf.smack.Services.UserDataService
 import com.example.gangelf.smack.Utilities.BROADCAST_USER_DATA_CHAANGE
 import com.example.gangelf.smack.Utilities.SOCKET_URL
 import io.socket.client.IO
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -39,22 +42,20 @@ class MainActivity : AppCompatActivity() {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        socket.connect()
+        socket.on("channelCreated", onNewChannel)
 
     }
 
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(BROADCAST_USER_DATA_CHAANGE))
-        socket.connect()
     }
 
-    override fun onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(userDataChangeReceiver)
-        super.onPause()
-    }
 
     override fun onDestroy() {
         super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(userDataChangeReceiver)
         socket.disconnect()
     }
 
@@ -114,6 +115,20 @@ class MainActivity : AppCompatActivity() {
                         //Cancel and close the dialog
                     }
                     .show()
+        }
+    }
+
+    private val onNewChannel = Emitter.Listener {args ->
+        runOnUiThread {
+            val channelName = args[0] as String
+            val channelDesc = args[1] as String
+            val channelId = args[2] as String
+
+            val newChannel = Channel(channelName, channelDesc, channelId)
+            MessageService.channels.add(newChannel)
+            println(newChannel.name)
+            println(newChannel.desc)
+            println(newChannel.id)
         }
     }
 
