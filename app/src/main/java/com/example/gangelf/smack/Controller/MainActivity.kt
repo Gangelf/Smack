@@ -66,6 +66,8 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
         setupAdapters()
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(BROADCAST_USER_DATA_CHAANGE))
+
         channel_list.setOnItemClickListener { _, _, i, _ ->
             selectedChannel = MessageService.channels[i]
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -78,12 +80,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(BROADCAST_USER_DATA_CHAANGE))
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -152,6 +148,7 @@ class MainActivity : AppCompatActivity() {
             messageTextField.visibility = View.INVISIBLE
             sendMessageBtn.visibility = View.INVISIBLE
             loginBtnUserHeader.text = "Login"
+            mainChannelName.text = "Please Login"
         } else {
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
