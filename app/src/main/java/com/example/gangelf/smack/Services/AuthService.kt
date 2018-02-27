@@ -20,7 +20,7 @@ import org.json.JSONException
  */
 object AuthService {
 
-    fun registerUser(context: Context, email: String, password: String, complete: (Boolean) -> Unit){
+    fun registerUser(email: String, password: String, complete: (Boolean) -> Unit){
 
         val jsonBody = JSONObject()
         jsonBody.put("email", email)
@@ -46,7 +46,7 @@ object AuthService {
         App.prefs.requestQueue.add(registerRequest)
     }
 
-    fun loginUser(context: Context, email: String, password: String, complete: (Boolean) -> Unit) {
+    fun loginUser(email: String, password: String, complete: (Boolean) -> Unit) {
 
         val jsonBody = JSONObject()
         jsonBody.put("email", email)
@@ -81,7 +81,7 @@ object AuthService {
         App.prefs.requestQueue.add(loginRequest)
     }
 
-    fun createUser(context: Context, email: String, password: String, name: String, avatarColor: String, avatarName: String, complete: (Boolean) -> Unit) {
+    fun createUser(email: String, password: String, name: String, avatarColor: String, avatarName: String, complete: (Boolean) -> Unit) {
         val jsonBody = JSONObject()
         jsonBody.put("name", name)
         jsonBody.put("email", email)

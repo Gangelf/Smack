@@ -11,6 +11,7 @@ import com.example.gangelf.smack.R
 import com.example.gangelf.smack.Services.AuthService
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_user_creation.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         hideKeyboard()
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            AuthService.loginUser(this, email, password) { loginSuccess ->
+            AuthService.loginUser(email, password) { loginSuccess ->
                 if (loginSuccess) {
                     AuthService.findUserByEmail(this) { findSuccess ->
                         if (findSuccess) {
